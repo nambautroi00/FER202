@@ -13,7 +13,7 @@ numbers.forEach((num) => {
 
 // Sử dụng map
 let squares = numbers.map((num) => num);
-S;
+
 console.log(squares);
 
 //Bài tập 2:  Lọc ra các số chẵn
@@ -33,3 +33,7 @@ people.forEach((person) => {
 // Lọc ra các person có age > 20
 let olderThan20 = people.filter((person) => person.age > 20);
 console.log(olderThan20);
+
+//Tổng hợp tuổi của tất cả các person
+let totalAge = people.reduce((sum, person) => sum + person.age, 0);
+console.log(`Tổng tuổi: ${totalAge}`);
