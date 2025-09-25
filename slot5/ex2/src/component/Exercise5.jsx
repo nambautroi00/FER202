@@ -16,10 +16,12 @@ export default function Exercise5() {
 
   return (
     <div>
-      <h2>Teen List (13–19)</h2>
+      <h1>Exercise 5</h1>
+      <h3>Teen List (13–19)</h3>
       {teens.map((t, index) => (
         <p key={index}>{t}</p>
       ))}
+      <hr></hr>
     </div>
   );
 }
