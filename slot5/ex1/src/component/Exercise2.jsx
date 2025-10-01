@@ -60,11 +60,9 @@ export default function Exersice2() {
         ))}
       </ul>
       <h4>
-        {" "}
         Tổng phần tử của mảng: <strong>{sum}</strong>
       </h4>
       <h4>
-        {" "}
         Trung bình phần tử trong mảng: <strong>{avg.toFixed(2)}</strong>{" "}
       </h4>
 
@@ -72,7 +70,6 @@ export default function Exersice2() {
       <ul>
         {names.map((name, index) => (
           <li key={index}>
-            {" "}
             Phần tử thứ {index} - {name}
           </li>
         ))}
@@ -97,7 +94,8 @@ export default function Exersice2() {
         </tbody>
       </table>
       <h4>
-        Trung bình điểm: <strong>{AvgGrade.toFixed(2)}</strong>
+        Trung bình điểm học sinh trên 7,5:{"     "}
+        <strong>{AvgGrade.toFixed(2)}</strong>
       </h4>
       <hr></hr>
     </div>

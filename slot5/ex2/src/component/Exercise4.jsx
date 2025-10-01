@@ -20,6 +20,11 @@ export default function Exercise4() {
         <strong>Rest Ages:</strong>{" "}
         {restAges.length ? restAges.join(", ") : "[]"}
       </p>
+      <ul>
+        {restAges.map((age, index) => (
+          <li key={index}>{age}</li>
+        ))}
+      </ul>
       <hr></hr>
     </div>
   );
