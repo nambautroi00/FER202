@@ -1,22 +1,5 @@
 .filter-card {
-  /* Option 1: Ocean Blue - Xanh dương biển hiện đại */
   background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
-  
-  /* Option 2: Dark Cinema - Tối như rạp phim (comment out option 1 và uncomment option 2 để dùng) */
-  /* background: linear-gradient(135deg, #141e30 0%, #243b55 100%); */
-  
-  /* Option 3: Sunset Orange - Hoàng hôn ấm áp */
-  /* background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); */
-  
-  /* Option 4: Netflix Red - Đỏ như Netflix */
-  /* background: linear-gradient(135deg, #e52d27 0%, #b31217 100%); */
-  
-  /* Option 5: Modern Teal - Xanh lục hiện đại */
-  /* background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); */
-  
-  /* Option 6: Purple Night - Tím đêm sâu thẳm */
-  /* background: linear-gradient(135deg, #360033 0%, #0b8793 100%); */
-  
   color: white;
   border: none;
 }
@@ -42,4 +25,3 @@
   border-color: white;
   box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
 }
-
