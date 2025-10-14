@@ -13,4 +13,5 @@ function MyFooter({ author, email, linkGithub }) {
     </footer>
   );
 }
+
 export default MyFooter;
