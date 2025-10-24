@@ -1,0 +1,45 @@
+/* Toast Container Styles */
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-container .toast {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+/* Ensure toast appears on top */
+.toast-container.top-end {
+  top: 1rem;
+  right: 1rem;
+}
+
+.toast-container.top-start {
+  top: 1rem;
+  left: 1rem;
+}
+
+.toast-container.bottom-end {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.toast-container.bottom-start {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+/* Toast animation */
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease-in-out;
+}
