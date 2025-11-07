@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "nam123",
+      "password": "123456",
+      "fullName": "Nguyễn Văn Nam"
+    },
+    {
+      "id": "2",
+      "username": "hainguyen",
+      "password": "123456",
+      "fullName": "Nguyễn Hải"
+    }
+  ],
+  "payments": [
+    {
+      "id": "2",
+      "userId": "1",
+      "semester": "Fall 2025",
+      "courseName": "Database Systems",
+      "amount": 4000000,
+      "date": "2025-10-05"
+    },
+    {
+      "userId": "2",
+      "semester": "Fall 2027",
+      "courseName": "Mobile Programming",
+      "amount": 4700000,
+      "date": "2025-07-10",
+      "id": "3"
+    },
+    {
+      "id": "50eb",
+      "userId": "1",
+      "semester": "Fall 2026",
+      "courseName": "Mobile App",
+      "amount": 3000000,
+      "date": "2025-11-05"
+    },
+    {
+      "id": "0f4f",
+      "userId": "1",
+      "semester": "SUMMER 2025",
+      "courseName": "React",
+      "amount": 3000000,
+      "date": "2025-11-05"
+    },
+    {
+      "userId": "2",
+      "semester": "Summer 2027",
+      "courseName": "Web Developer",
+      "amount": 6000000,
+      "date": "2025-11-06",
+      "id": "0dfd"
+    }
+  ]
+}
