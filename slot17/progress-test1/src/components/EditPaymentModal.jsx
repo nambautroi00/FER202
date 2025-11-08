@@ -1,12 +1,32 @@
+/**
+ * FILE: EditPaymentModal.jsx
+ * MỤC ĐÍCH: Modal sửa payment
+ * 
+ * CÁCH HOẠT ĐỘNG:
+ * - Modal hiển thị form để sửa payment
+ * - Lấy state từ PaymentContext (showEditModal, selectedPayment)
+ * - Load payment data vào form khi modal mở
+ * - Validate và submit form
+ * - Sau khi update thành công → đóng modal
+ * 
+ * SỬ DỤNG:
+ * - Được gọi từ PaymentTable hoặc ViewDetailsModal
+ * - State được quản lý bởi PaymentContext
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { usePayments } from '../contexts/PaymentContext';
 import { useAuth } from '../contexts/AuthContext';
 
 const EditPaymentModal = () => {
+  // Lấy state và functions từ PaymentContext
   const { showEditModal, selectedPayment, closeEditModal, updatePayment } = usePayments();
+  
+  // Lấy user từ AuthContext
   const { user } = useAuth();
   
+  // Form data state
   const [formData, setFormData] = useState({
     semester: '',
     courseName: '',
@@ -14,16 +34,27 @@ const EditPaymentModal = () => {
     date: '',
   });
   
+  // Validation errors
   const [errors, setErrors] = useState({});
+  
+  // Loading state
   const [loading, setLoading] = useState(false);
+  
+  // Error message
   const [error, setError] = useState('');
 
+  /**
+   * useEffect: Load payment data vào form khi selectedPayment thay đổi
+   * - Khi modal mở → selectedPayment được set
+   * - Load data vào formData
+   * - Reset errors
+   */
   useEffect(() => {
     if (selectedPayment) {
       setFormData({
         semester: selectedPayment.semester,
         courseName: selectedPayment.courseName,
-        amount: selectedPayment.amount.toString(),
+        amount: selectedPayment.amount.toString(), // Convert number → string
         date: selectedPayment.date,
       });
       setErrors({});

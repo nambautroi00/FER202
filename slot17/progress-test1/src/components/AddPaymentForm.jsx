@@ -1,3 +1,29 @@
+/**
+ * FILE: AddPaymentForm.jsx
+ * MỤC ĐÍCH: Component form thêm/sửa payment (2-in-1)
+ * 
+ * CÁCH HOẠT ĐỘNG:
+ * - Component này có thể hoạt động ở 2 mode: Add hoặc Edit
+ * - Nếu có paymentId prop → Edit mode (sửa payment)
+ * - Nếu không có paymentId → Add mode (thêm payment mới)
+ * - Sử dụng trong AddPaymentPage và EditPaymentPage
+ * 
+ * PROPS:
+ * - paymentId: string | null - ID của payment cần sửa (null = add mode)
+ * 
+ * VALIDATION:
+ * - semester: Required
+ * - courseName: Required
+ * - amount: Required, phải là số dương
+ * - date: Required
+ * 
+ * LUỒNG:
+ * 1. Load data: Nếu edit mode → load payment data từ allPayments
+ * 2. User điền form → validation real-time
+ * 3. Submit → validate → gọi addPayment hoặc updatePayment
+ * 4. Thành công → navigate về /home
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Card, Container, Alert, Spinner } from 'react-bootstrap';
 import { usePayments } from '../contexts/PaymentContext';
@@ -5,10 +31,16 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const AddPaymentForm = ({ paymentId = null }) => {
+  // Lấy functions từ PaymentContext
   const { addPayment, updatePayment, allPayments } = usePayments();
+  
+  // Lấy user từ AuthContext (để lấy userId)
   const { user } = useAuth();
+  
+  // Hook để navigate
   const navigate = useNavigate();
   
+  // Form data state
   const [formData, setFormData] = useState({
     userId: user?.id || '',
     semester: '',
@@ -17,35 +49,55 @@ const AddPaymentForm = ({ paymentId = null }) => {
     date: '',
   });
   
+  // Validation errors
   const [errors, setErrors] = useState({});
+  
+  // Loading state
   const [loading, setLoading] = useState(false);
+  
+  // Error message
   const [error, setError] = useState('');
 
+  // Xác định mode: có paymentId → Edit mode, không có → Add mode
   const isEditMode = !!paymentId;
 
+  /**
+   * useEffect: Load data khi component mount hoặc paymentId/user thay đổi
+   * 
+   * LUỒNG:
+   * - Edit mode: Tìm payment trong allPayments → load data vào form
+   * - Add mode: Reset form về trạng thái ban đầu (date = today)
+   */
   useEffect(() => {
     if (isEditMode) {
+      // Edit mode: Load payment data
       const payment = allPayments.find(p => p.id === paymentId);
       if (payment) {
         setFormData({
           userId: payment.userId,
           semester: payment.semester,
           courseName: payment.courseName,
-          amount: payment.amount.toString(),
+          amount: payment.amount.toString(), // Convert number → string
           date: payment.date,
         });
       }
     } else {
+      // Add mode: Reset form với date = today
       setFormData({
         userId: user?.id || '',
         semester: '',
         courseName: '',
         amount: '',
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toISOString().split('T')[0], // Format: YYYY-MM-DD
       });
     }
   }, [paymentId, allPayments, user, isEditMode]);
 
+  /**
+   * Handler khi user thay đổi giá trị input
+   * - Cập nhật formData
+   * - Clear error của field đó
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -53,7 +105,7 @@ const AddPaymentForm = ({ paymentId = null }) => {
       [name]: value
     }));
     
-    // Clear error for this field
+    // Clear error của field này
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -63,23 +115,31 @@ const AddPaymentForm = ({ paymentId = null }) => {
     }
   };
 
+  /**
+   * Validate form trước khi submit
+   * @returns {boolean} true nếu không có lỗi
+   */
   const validateForm = () => {
     const newErrors = {};
 
+    // Validate semester
     if (!formData.semester.trim()) {
       newErrors.semester = 'Semester is required';
     }
 
+    // Validate courseName
     if (!formData.courseName.trim()) {
       newErrors.courseName = 'Course name is required';
     }
 
+    // Validate amount
     if (!formData.amount.trim()) {
       newErrors.amount = 'Amount is required';
     } else if (isNaN(formData.amount) || parseFloat(formData.amount) <= 0) {
       newErrors.amount = 'Amount must be a positive number';
     }
 
+    // Validate date
     if (!formData.date.trim()) {
       newErrors.date = 'Date is required';
     }
@@ -88,32 +148,45 @@ const AddPaymentForm = ({ paymentId = null }) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  /**
+   * Handler khi submit form
+   * 
+   * LUỒNG:
+   * 1. Validate form
+   * 2. Nếu có lỗi → dừng
+   * 3. Gọi addPayment hoặc updatePayment tùy mode
+   * 4. Thành công → navigate về /home
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
+    // Validate form
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
 
+    // Chuẩn bị data để gửi
     const paymentData = {
       userId: user?.id || formData.userId,
       semester: formData.semester.trim(),
       courseName: formData.courseName.trim(),
-      amount: parseFloat(formData.amount),
+      amount: parseFloat(formData.amount), // Convert string → number
       date: formData.date,
     };
 
     try {
       let result;
+      // Gọi function tùy mode
       if (isEditMode) {
         result = await updatePayment(paymentId, paymentData);
       } else {
         result = await addPayment(paymentData);
       }
 
+      // Nếu thành công → navigate về home
       if (result.success) {
         navigate('/home');
       } else {
@@ -126,6 +199,10 @@ const AddPaymentForm = ({ paymentId = null }) => {
     }
   };
 
+  /**
+   * Handler khi click Cancel
+   * - Navigate về /home
+   */
   const handleCancel = () => {
     navigate('/home');
   };

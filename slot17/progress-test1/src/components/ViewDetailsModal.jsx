@@ -1,14 +1,36 @@
+/**
+ * FILE: ViewDetailsModal.jsx
+ * MỤC ĐÍCH: Modal hiển thị chi tiết payment
+ * 
+ * CÁCH HOẠT ĐỘNG:
+ * - Modal hiển thị thông tin chi tiết của payment
+ * - Lấy state từ PaymentContext (showViewModal, selectedPayment)
+ * - Có nút "Edit Payment" để chuyển sang modal sửa
+ * - Có nút "Close" để đóng modal
+ * 
+ * SỬ DỤNG:
+ * - Được gọi từ PaymentTable khi user click "View Details"
+ * - State được quản lý bởi PaymentContext
+ */
+
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { usePayments } from '../contexts/PaymentContext';
 
 const ViewDetailsModal = () => {
+  // Lấy state và functions từ PaymentContext
   const { showViewModal, selectedPayment, closeViewModal, openEditModal } = usePayments();
 
+  /**
+   * Format số tiền theo định dạng Việt Nam
+   */
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
   };
 
+  /**
+   * Format ngày theo định dạng Việt Nam
+   */
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {
       year: 'numeric',
@@ -17,11 +39,17 @@ const ViewDetailsModal = () => {
     });
   };
 
+  /**
+   * Handler khi click "Edit Payment"
+   * - Đóng modal xem chi tiết
+   * - Mở modal sửa với payment hiện tại
+   */
   const handleEdit = () => {
     closeViewModal();
     openEditModal(selectedPayment);
   };
 
+  // Nếu không có payment được chọn → không render
   if (!selectedPayment) return null;
 
   return (
